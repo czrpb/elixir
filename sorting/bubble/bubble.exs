@@ -1,24 +1,25 @@
 defmodule Bubble do
-  defp _sort([]) do
-    []
+  defp _sort({[], [], l}) do
+    l
   end
-  defp _sort([a]) do
-    [a]
+
+  defp _sort({[a], [], []}) do
+    _sort({[], [], [a]})
   end
-  defp _sort([a,b|[]]=list) do
+
+  defp _sort({[a], n, s}) do
+    _sort({n, [], [a|s]})
+  end
+
+  defp _sort({[a,b|r], n, s}) do
     cond do
-      b<a -> [b, a]
-      true -> list
+      b<a -> _sort({[a|r], [b|n], s})
+      true -> _sort({[b|r], [a|n], s})
     end
   end
-  defp _sort([a,b|c]) do
-    cond do
-      b<a -> [b] ++ _sort([a|c])
-      true -> [a] ++ _sort([b|c])
-    end
-  end
+
   def sort(list) do
-    _sort(list)
+    _sort({list, [], []})
   end
 end
 
@@ -37,3 +38,24 @@ end
 [3, 1, 2] |> Bubble.sort |> inspect |> IO.puts
 [3, 2, 1] |> Bubble.sort |> inspect |> IO.puts
 
+IO.puts("1..5")
+1..5 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+
+IO.puts("\n..500")
+1..500 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..500 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..500 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..500 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..500 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+
+IO.puts("\n..5000")
+1..5000 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5000 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+1..5000 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
+
+IO.puts("\n..50000")
+1..50000 |> Enum.shuffle |> Bubble.sort |> inspect |> IO.puts
