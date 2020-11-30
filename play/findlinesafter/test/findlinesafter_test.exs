@@ -1,8 +1,9 @@
-defmodule FindlinesafterTest do
+defmodule FindLinesAfterTest do
   use ExUnit.Case
-  doctest Findlinesafter
+  doctest FindLinesAfter
 
   test "greets the world" do
-    assert Findlinesafter.hello() == :world
+    expected_lines = []
+    assert FindLinesAfter.lines_after("**TODO:") == expected_lines
   end
 end
