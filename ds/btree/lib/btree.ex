@@ -66,18 +66,6 @@ defmodule BTree do
     end
   end
 
-  def inserted(tree) do
-    case tree do
-      {nil, value, nil} -> [value]
-      {left, value, nil} ->
-        [value] ++ sorted(left)
-      {nil, value, right} ->
-        [value] ++ sorted(right)
-      {left, value, right} ->
-        [value] ++ sorted(left) ++ sorted(right)
-    end
-  end
-
   def sorted(tree) do
     case tree do
       {nil, value, nil} -> [value]
