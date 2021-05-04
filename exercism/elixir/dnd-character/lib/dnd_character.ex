@@ -23,7 +23,7 @@ defmodule DndCharacter do
   def ability do
     [:random.uniform(6), :random.uniform(6), :random.uniform(6), :random.uniform(6)]
     |> Enum.sort
-    |> Enum.drop(1)
+    |> tl
     |> Enum.sum
   end
 
