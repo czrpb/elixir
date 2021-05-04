@@ -21,7 +21,10 @@ defmodule DndCharacter do
 
   @spec ability :: pos_integer()
   def ability do
-    :random.uniform(6)+:random.uniform(6)+:random.uniform(6)
+    [:random.uniform(6), :random.uniform(6), :random.uniform(6), :random.uniform(6)]
+    |> Enum.sort
+    |> Enum.drop(1)
+    |> Enum.sum
   end
 
   @spec character :: t()
