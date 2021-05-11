@@ -40,6 +40,10 @@ defmodule MaximumDepthOfBinaryTree do
     _depth_iter(subtrees, count+1)
   end
   def depth_via_iteration(tree) do
-    _depth_iter(tree)
+    if tree == nil do
+      _depth_iter([])
+    else
+      _depth_iter([tree])
+    end
   end
 end
