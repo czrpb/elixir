@@ -13,7 +13,7 @@ defmodule TelegramProblem do
     |> Enum.reduce(
       {{0, ""}, []},
       fn
-        word, {{0, _}, []} -> {{String.length(word), word}, []}
+        word, {{0, ""}, []} -> {{String.length(word), word}, []}
 
         word, {{currentlinelen, currentline}, lines}
           when currentlinelen + byte_size(word) < max_length ->
