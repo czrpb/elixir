@@ -5,16 +5,11 @@ defmodule Extract do
     |> Enum.reduce_while(
       {:error, {false, []}},
       fn w, {_code, {capture, captured}}=acc ->
-#        {w, acc} |> inspect |> IO.puts
-
-        return = cond do
+        cond do
           stop.(w) and capture -> {:halt, {:ok, [w|captured]}}
           start.(w) or capture -> {:cont, {:error, {true, [w|captured]}}}
           true -> {:cont, acc}
         end
-
-#        return |> inspect |> IO.puts
-        return
       end
     )
   end
@@ -26,9 +21,8 @@ expected1 = ~W<can figure out how to extract the text>
 expected2 = ~W<if i can figure out how to extract the text>
 
 #result = input |> Extract.extract(["if", "can"], ["text"])
-result = input |> Extract.extract(&Regex.match?(~R[^iff|caan$], &1), &Regex.match?(~R[^text$], &1))
-
-#result |> inspect |> IO.puts
+result = input
+|> Extract.extract(&Regex.match?(~R<^if|can$>, &1), &Regex.match?(~R<^text$>, &1))
 
 status = case result do
   {:ok, result} -> result in [expected1, expected2]
@@ -40,4 +34,3 @@ case status do
   [] -> IO.puts("FAILED to find ending RE (dont know about starting)")
   status -> IO.puts("FAILED to find starting RE: Got #{status |> inspect}")
 end
-7
