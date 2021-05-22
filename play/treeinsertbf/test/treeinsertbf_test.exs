@@ -127,10 +127,12 @@ defmodule TreeInsertBFTest do
     [root | rest] = input
 
     expected = {
-      {{nil, 4, nil, :left}, 2, {nil, 5, nil, :left}, :complete},
-      1,
-      {{nil, 6, nil, :left}, 3, nil, :right},
-      :complete
+      {
+        {{{{nil, 4, nil}, {0, 0}}, 2, {{nil, 6, nil}, {0, 0}}}, {1, 1}},
+        1,
+        {{{{nil, 5, nil}, {0, 0}}, 3, nil}, {1, 0}}
+      },
+      {3, 2}
     }
 
     assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
@@ -141,10 +143,18 @@ defmodule TreeInsertBFTest do
     [root | rest] = input
 
     expected = {
-      {{nil, 4, nil, :left}, 2, {nil, 5, nil, :left}, :complete},
-      1,
-      {{nil, 6, nil, :left}, 3, {nil, 7, nil, :left}, :complete},
-      :complete
+      {
+        {
+          {{{nil, 4, nil}, {0, 0}}, 2, {{nil, 6, nil}, {0, 0}}},
+          {1, 1}
+        },
+        1,
+        {
+          {{{nil, 5, nil}, {0, 0}}, 3, {{nil, 7, nil}, {0, 0}}},
+          {1, 1}
+        }
+      },
+      {3, 3}
     }
 
     assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
@@ -156,14 +166,18 @@ defmodule TreeInsertBFTest do
 
     expected = {
       {
-        {{nil, 8, nil, :left}, 4, nil, :right},
-        2,
-        {nil, 5, nil, :left},
-        :complete
+        {
+          {
+            {{{{nil, 8, nil}, {0, 0}}, 4, nil}, {1, 0}},
+            2,
+            {{nil, 6, nil}, {0, 0}}
+          },
+          {2, 1}
+        },
+        1,
+        {{{{nil, 5, nil}, {0, 0}}, 3, {{nil, 7, nil}, {0, 0}}}, {1, 1}}
       },
-      1,
-      {{nil, 6, nil, :left}, 3, {nil, 7, nil, :left}, :complete},
-      :complete
+      {4, 3}
     }
 
     assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
@@ -175,14 +189,24 @@ defmodule TreeInsertBFTest do
 
     expected = {
       {
-        {{nil, 8, nil, :left}, 4, {nil, 9, nil, :left}, :complete},
-        2,
-        {nil, 5, nil, :left},
-        :complete
+        {
+          {
+            {{{{nil, 8, nil}, {0, 0}}, 4, nil}, {1, 0}},
+            2,
+            {{nil, 6, nil}, {0, 0}}
+          },
+          {2, 1}
+        },
+        1,
+        {
+          {
+            {{{{nil, 9, nil}, {0, 0}}, 5, nil}, {1, 0}},
+            3,
+            {{nil, 7, nil}, {0, 0}}
+          },
+          {2, 1}}
       },
-      1,
-      {{nil, 6, nil, :left}, 3, {nil, 7, nil, :left}, :complete},
-      :complete
+      {4, 4}
     }
 
     assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
