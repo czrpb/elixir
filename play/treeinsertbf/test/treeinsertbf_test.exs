@@ -211,4 +211,63 @@ defmodule TreeInsertBFTest do
 
     assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
   end
+
+  test "make balanced tree for: 1..10" do
+    input = 1..10 |> Enum.to_list
+    [root | rest] = input
+
+    expected = {
+      {
+        {
+          {
+            {{{{nil, 8, nil}, {0, 0}}, 4, nil}, {1, 0}},
+            2,
+            {{{{nil, 10, nil}, {0, 0}}, 6, nil}, {1, 0}}
+          },
+          {2, 2}
+        },
+        1,
+        {
+          {
+            {{{{nil, 9, nil}, {0, 0}}, 5, nil}, {1, 0}},
+            3,
+            {{nil, 7, nil}, {0, 0}}
+          },
+          {2, 1}}
+      },
+      {5, 4}
+    }
+
+    assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
+  end
+
+  test "make balanced tree for: 1..11" do
+    input = 1..11 |> Enum.to_list
+    [root | rest] = input
+
+    expected = {
+      {
+        {
+          {
+            {{{{nil, 8, nil}, {0, 0}}, 4, nil}, {1, 0}},
+            2,
+            {{{{nil, 10, nil}, {0, 0}}, 6, nil}, {1, 0}}
+          },
+          {2, 2}
+        },
+        1,
+        {
+          {
+            {{{{nil, 9, nil}, {0, 0}}, 5, nil}, {1, 0}},
+            3,
+            {{{{nil, 11, nil}, {0, 0}}, 7, nil}, {1, 0}}
+          },
+          {2, 2}}
+      },
+      {5, 5}
+    }
+
+    assert TreeInsertBF.insert_bf_into_tree(root, rest) == expected
+  end
+
 end
