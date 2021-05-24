@@ -42,3 +42,38 @@ defmodule Hexadecimal do
     end
   end
 end
+
+defmodule Hexadecimal2 do
+  def to_decimal(hex) do
+    String.graphemes(hex)
+    |> Enum.reduce_while(0, &hex_to_decimal(&1, &2))
+  end
+
+  def hex_to_decimal(value, acc) do
+    case value do
+      "0" -> {:cont, 16 * acc + 0}
+      "1" -> {:cont, 16 * acc + 1}
+      "2" -> {:cont, 16 * acc + 2}
+      "3" -> {:cont, 16 * acc + 3}
+      "4" -> {:cont, 16 * acc + 4}
+      "5" -> {:cont, 16 * acc + 5}
+      "6" -> {:cont, 16 * acc + 6}
+      "7" -> {:cont, 16 * acc + 7}
+      "8" -> {:cont, 16 * acc + 8}
+      "9" -> {:cont, 16 * acc + 9}
+      "a" -> {:cont, 16 * acc + 10}
+      "A" -> {:cont, 16 * acc + 10}
+      "b" -> {:cont, 16 * acc + 11}
+      "B" -> {:cont, 16 * acc + 11}
+      "c" -> {:cont, 16 * acc + 12}
+      "C" -> {:cont, 16 * acc + 12}
+      "d" -> {:cont, 16 * acc + 13}
+      "D" -> {:cont, 16 * acc + 13}
+      "e" -> {:cont, 16 * acc + 14}
+      "E" -> {:cont, 16 * acc + 14}
+      "f" -> {:cont, 16 * acc + 15}
+      "F" -> {:cont, 16 * acc + 15}
+      _ -> {:halt, 0}
+    end
+  end
+end
