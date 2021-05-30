@@ -3,8 +3,7 @@ defmodule BTree do
   Documentation for `Btree`.
   """
 
-  @doc """
-  """
+  # Utility functions
   def new(root) do
     leaf(root)
   end
@@ -28,52 +27,50 @@ defmodule BTree do
     value
   end
 
-  def left(node) do
-    {left, _value, _right} = node
+  # Functions to mess with the left or right nodes
+  def left({left, _value, _right}) do
     left
   end
-  def left(node, newleft) do
-    {_, value, right} = node
+  def left({_, value, right}, newleft) do
     {newleft, value, right}
   end
 
-  def right(node) do
-    {_left, _value, right} = node
+  def right({_left, _value, right}) do
     right
   end
-  def right(node, newright) do
-    {left, value, _} = node
+  def right({left, value, _}, newright) do
     {left, value, newright}
   end
 
-  def insert(tree, newvalue) do
-    {left, value, right} = tree
-    cond do
-      newvalue < value ->
-        if left == nil do
-          {leaf(newvalue), value, right}
-        else
-          {insert(left, newvalue), value, right}
-        end
-      newvalue > value ->
-        if right == nil do
-          {left, value, leaf(newvalue)}
-        else
-          {left, value, insert(right, newvalue)}
-        end
-      true ->
-        tree
-    end
+  # Heads to insert on the left
+  def insert({nil, value, right}, newvalue)
+    when newvalue < value
+    do
+    {leaf(newvalue), value, right}
+  end
+  def insert({left, value, right}, newvalue)
+    when newvalue < value
+    do
+    {insert(left, newvalue), value, right}
   end
 
-  def sorted(tree) do
-    case tree do
-      {nil, value, nil} -> [value]
-      {left, value, nil} -> sorted(left) ++ [value]
-      {nil, value, right} -> [value] ++ sorted(right)
-      {left, value, right} -> sorted(left) ++ [value] ++ sorted(right)
-    end
+  # Heads to insert on the right
+  def insert({left, value, nil}, newvalue)
+    when value < newvalue
+    do
+    {left, value, leaf(newvalue)}
   end
+  def insert({left, value, right}, newvalue)
+    when value < newvalue
+    do
+    {left, value, insert(right, newvalue)}
+  end
+
+  # Sorted tree to sorted list
+  def sorted({nil, value, nil}), do: [value]
+  def sorted({left, value, nil}), do: sorted(left) ++ [value]
+  def sorted({nil, value, right}), do: [value] ++ sorted(right)
+  def sorted({left, value, right}), do: sorted(left) ++ [value] ++ sorted(right)
 
   def sorted_with_tasks(tree) do
     case tree do

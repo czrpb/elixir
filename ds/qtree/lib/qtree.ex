@@ -3,75 +3,123 @@ defmodule QTree do
   Documentation for `QTree`.
   """
 
+  # Heads to create a tree
   def tree(data) when is_list(data) do
-    {nil, data, nil}
+    {min, data} = Enum.sort(data) |> List.pop_at(0)
+    {max, data} = List.pop_at(data, -1)
+    {nil, {min, data, max}, nil}
   end
-  def tree(value) do
-    {nil, [value], nil}
-  end
-  def leaf?(tree) do
-    {left, _data, right} = tree
-    left == nil and right == nil
+  def tree(newvalue) do
+    {nil, {nil, [newvalue], nil}, nil}
   end
 
-  def left(tree) do
-    {left, _data, _right} = tree
-    left
-  end
-  def right(tree) do
-    {_left, _data, right} = tree
-    right
+  def leaf?({nil, _data, nil}) do
+    true
   end
 
-  def peek(tree, side) do
-    {_, data, _} = tree
-    case side do
-      :left -> List.last(data)
-      :right -> List.first(data)
+  # Heads to get left/right subtrees
+  def left({left, _data, _right}), do: left
+  def right({_left, _data, right}), do: right
+
+  # Head to peek into a subtree's value
+  def peek({_, {min, _data, _max}, _}, :left), do: min
+  def peek({_, {_min, _data, max}, _}, :right), do: max
+
+
+  ### Head to insert a value into a tree
+  def insert(newvalue, nil), do: tree(newvalue)
+
+  # Heads when the tree has just 1 value
+  def insert(newvalue, {left, {nil, [num], nil}, right})
+  when newvalue < num
+  do
+    {left, {newvalue, [], num}, right}
+  end
+  def insert(newvalue, {left, {nil, [num], nil}, right})
+  when num < newvalue
+  do
+    {left, {num, [], newvalue}, right}
+  end
+
+  # Heads when the tree has just 2 values
+  def insert(newvalue, {left, {min, [], max}, right})
+  when newvalue < min
+  do
+    {left, {newvalue, [min], max}, right}
+  end
+  def insert(newvalue, {left, {min, [], max}, right})
+  when max < newvalue
+  do
+    {left, {min, [max], newvalue}, right}
+  end
+  def insert(newvalue, {left, {min, [], max}, right})
+  when min < newvalue and newvalue < max
+  do
+    {left, {min, [newvalue], max}, right}
+  end
+
+  # Heads when the tree has just 3 values
+  def insert(newvalue, {left, node={min, [_num], _max}, right})
+  when newvalue < min
+  do
+    {insert(newvalue, left), node, right}
+  end
+  def insert(newvalue, {left, node={_min, [_num], max}, right})
+  when max < newvalue
+  do
+    {left, node, insert(newvalue, right)}
+  end
+  def insert(newvalue, {left, {min, [num], max}, right})
+  when min < newvalue and newvalue < num
+  do
+    {left, {min, [newvalue, num], max}, right}
+  end
+  def insert(newvalue, {left, {min, [num], max}, right})
+  when num < newvalue and newvalue < max
+  do
+    {left, {min, [num, newvalue], max}, right}
+  end
+
+  # Head for when the newvalue is in data somewhere
+  def insert(newvalue, {left, node={min, _data, _max}, right})
+  when newvalue < min
+  do
+    {insert(newvalue, left), node, right}
+  end
+  def insert(newvalue, {left, node={_min, _data, max}, right})
+  when max < newvalue
+  do
+    {left, node, insert(newvalue, right)}
+  end
+  def insert(newvalue, {left, {min, data, max}, right})
+  when min < newvalue and newvalue < max
+  do
+    first = List.first(data)
+    last = List.last(data)
+    cond do
+      newvalue < first -> {left, {min, [newvalue|data], max}, right}
+      last < newvalue -> {left, {min, data++[newvalue], max}, right}
+      true ->
+        {smaller, larger} = data |> Enum.split_while(&(&1<newvalue))
+        {largest_smaller, smaller} = List.pop_at(smaller, -1)
+        [smallest_larger| larger] = larger
+        {
+          [min|smaller] |> Enum.reduce(left, &insert/2),
+          {largest_smaller, [newvalue], smallest_larger},
+          larger++[max] |> Enum.reduce(right, &insert/2)
+        }
     end
   end
 
-  def insert(value, tree \\ nil) do
-    if tree == nil do
-      tree(value)
-    else
-      {left, data, right} = tree
-      {smallest, largest} = {List.first(data), List.last(data)}
-      cond do
-        right == nil and largest < value ->
-          {left, data ++ [value], right}
-
-        left == nil and value < smallest ->
-          {left, [value|data], right}
-
-        smallest < value and value < largest ->
-          {smaller, larger} = data |> Enum.split_while(&(&1<value))
-          {{left, smaller, nil}, [value], {nil, larger, right}}
-
-        value < smallest ->
-          if peek(left, :left) < value do
-            {left, [value|data], right}
-          else
-            {insert(value, left), data, right}
-          end
-
-        largest < value ->
-          if value < peek(right, :right) do
-            {left, data ++ [value], right}
-          else
-            {left, data, insert(value, right)}
-          end
-
-      end
-    end
-  end
 
   def sorted(nil) do
     []
   end
-  def sorted(tree) do
-    {left, data, right} = tree
+  def sorted({left, {nil, data, nil}, right}) do
     sorted(left) ++ data ++ sorted(right)
+  end
+  def sorted({left, {min, data, max}, right}) do
+    sorted(left) ++ [min] ++ data ++ [max] ++ sorted(right)
   end
 
 end
