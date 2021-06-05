@@ -113,13 +113,31 @@ defmodule QTree do
 
 
   def sorted(nil) do
-    []
+    {[], 0}
   end
   def sorted({left, {nil, data, nil}, right}) do
-    sorted(left) ++ data ++ sorted(right)
+    {left, ldepth} = sorted(left)
+    {right, rdepth} = sorted(right)
+    {
+      left ++ data ++ right,
+      if ldepth < rdepth do
+        rdepth+1
+      else
+        ldepth+1
+      end
+    }
   end
   def sorted({left, {min, data, max}, right}) do
-    sorted(left) ++ [min] ++ data ++ [max] ++ sorted(right)
+    {left, ldepth} = sorted(left)
+    {right, rdepth} = sorted(right)
+    {
+      left ++ [min] ++ data ++ [max] ++ right,
+      if ldepth < rdepth do
+        rdepth+1
+      else
+        ldepth+1
+      end
+    }
   end
 
 end

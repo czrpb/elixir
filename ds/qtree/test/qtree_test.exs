@@ -195,9 +195,10 @@ defmodule QTreeTest do
     assert QTree.sorted(tree) == Enum.sort(list)
   end
 
-  test "sorted list of [almost] #{@million} nums" do
-    nums = 0..@million
+  test "sorted list of [almost] #{@million*10} nums" do
+    nums = 0..@million*10
     |> Enum.into(MapSet.new(), fn _ -> :rand.uniform(@million) end)
+#    |> Enum.into(MapSet.new(), fn _ -> :rand.uniform(@thousand) end)
     |> Enum.shuffle
 
     {ms_nums, nums_sorted} = :timer.tc(fn -> Enum.sort(nums) end)
