@@ -30,11 +30,5 @@ defmodule BBTreeFromSortedList do
     |> Enum.split(div(Enum.count(values), 2))
 
     {from_sorted(lvalues), root, from_sorted(rvalues)}
-
-
-    # Enum.zip(Enum.reverse(lvalues), rvalues)
-    # |> Enum.flat_map(&Tuple.to_list/1)
-    # |> (fn l -> [root|l] end).()
-    # |> new
   end
 end
