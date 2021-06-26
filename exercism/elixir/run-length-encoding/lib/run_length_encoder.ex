@@ -1,4 +1,36 @@
 defmodule RunLengthEncoder do
+  # Fantastic solution from:
+  ### https://exercism.io/tracks/elixir/exercises/run-length-encoding/solutions/493021c671694de091372066819f61e2
+  def encode(""), do: ""
+  def encode(string) do
+    string
+    |> String.graphemes
+    |> Enum.chunk_by(&(&1))
+    |> Enum.reduce("", fn
+      [c], acc ->
+        "#{acc}#{c}"
+      chars, acc ->
+        "#{acc}#{length(chars)}#{hd(chars)}"
+    end)
+  end
+
+  def decode(""), do: ""
+  def decode(string) do
+    Regex.scan(~r<(?:(\d*)([a-z\sA-z]))>, string, capture: :all_but_first)
+    |> Enum.reduce(
+      "",
+      fn
+        [], acc ->
+          "#{acc}"
+        [digit_str, char], acc ->
+          digit = if digit_str == "", do: 1, else: String.to_integer(digit_str)
+          "#{acc}#{String.duplicate(char, digit)}"
+      end
+    )
+  end
+end
+
+defmodule RunLengthEncoder_First do
   @moduledoc """
   Generates a string where consecutive elements are represented as a data value and count.
   "AABBBCCCC" => "2A3B4C"
