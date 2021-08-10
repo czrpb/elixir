@@ -1,0 +1,30 @@
+# VegaLite Play
+
+## Install
+
+```elixir
+Mix.install([
+  {:vega_lite, "~> 0.1.0"},
+  {:kino, "~> 0.2.0"}
+])
+```
+
+```elixir
+alias VegaLite, as: Vl
+```
+
+## Basic Timeseries
+
+```elixir
+data = [
+  %{"time" => 1, "value" => 10},
+  %{"time" => 2, "value" => 4},
+  %{"time" => 3, "value" => 17}
+]
+
+Vl.new()
+|> Vl.data_from_values(data)
+|> Vl.encode_field(:x, "time")
+|> Vl.mark(:point, color: "#000000")
+|> Vl.encode_field(:y, "value")
+```
