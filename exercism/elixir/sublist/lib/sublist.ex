@@ -1,4 +1,4 @@
-defmodule Sublist_1 do
+defmodule Sublist do
   @moduledoc """
   Returns whether the first list is a sublist or a superlist of the second list
   and if not whether it is equal or unequal to the second list.
@@ -18,7 +18,7 @@ defmodule Sublist_1 do
        else, target as sublist might be within
   6. if testing test list is embedded thus sublist,
        walk down:
-         a. test list until 
+         a. test list until
   7. if testing target list is embedded thus superlist,
   """
 
