@@ -1,4 +1,30 @@
 defmodule Sublist do
+  def compare([], []), do: :equal
+  def compare(a, a), do: :equal
+  def compare(a, b) when length(a) == length(b) do
+    :unequal
+  end
+  def compare(a, b)
+  when length(a) < length(b) do
+    compare_(a, b, [], :sublist)
+  end
+  def compare(a, b), do: compare_(b, a, [], :superlist)
+
+  def compare_([], _, _, type), do: type
+  def compare_(_, [], _, type), do: :unequal
+  def compare_([a|as], [a|bs], matched, type) do
+    compare_(as, bs, [a|matched], type)
+  end
+  def compare_([a|_]=as, [b|bs], [], type) do
+    compare_(as, bs, [], type)
+  end
+  def compare_([a|_]=as, [b|_]=bs, matched, type) do
+    matched = Enum.reverse(matched)
+    compare_(matched++as, (matched|>tl)++bs, [], type)
+  end
+end
+
+defmodule Sublist_1 do
   @moduledoc """
   Returns whether the first list is a sublist or a superlist of the second list
   and if not whether it is equal or unequal to the second list.
