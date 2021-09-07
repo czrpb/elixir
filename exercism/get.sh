@@ -4,6 +4,8 @@ set -x
 
 exercism download --exercise=$1 --track=elixir
 
+mv -v elixir/$1 .
+
 cd $1
 
 file="$(echo $1 | tr - _)"
