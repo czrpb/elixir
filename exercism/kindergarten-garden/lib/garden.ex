@@ -45,17 +45,20 @@ defmodule Garden do
     |> Enum.zip()
     # zip up the chunks from row1 and row2; result is 2-tuple (row1 and row2) of 2-charlists
 
-    |> Stream.concat(Stream.cycle([{[], []}]))
-    # we need empty chunks for students that didnt plant
+    |> Enum.map(fn {row1, row2} -> row1 ++ row2 end)
+    # now have a list of cups from row1 and row2 together
+
+    |> Stream.concat(Stream.cycle([[]]))
+    # we need empty list cups for students that didnt plant
 
     |> Enum.zip(Enum.sort(student_names))
-    # zip up the chunks with students; result is a 2-tuple of 2-tuple for row1 and row2
-    # and the students name
+    # zip up the cups with students
+    # result is a 2-tuple of list of cups and the students name
 
-    |> Enum.into(%{}, fn {{row1, row2}, student} ->
+    |> Enum.into(%{}, fn {cups, student} ->
       {
         student,
-        (row1 ++ row2) |> Enum.map(&@cup_to_plant[&1]) |> List.to_tuple()
+        cups |> Enum.map(&@cup_to_plant[&1]) |> List.to_tuple()
         # turns each students cups into their plant names
       }
     end)
