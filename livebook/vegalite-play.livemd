@@ -17,14 +17,38 @@ alias VegaLite, as: Vl
 
 ```elixir
 data = [
-  %{"time" => 1, "value" => 10},
-  %{"time" => 2, "value" => 4},
-  %{"time" => 3, "value" => 17}
+  %{"time" => 1, "value" => 10, "size" => 200},
+  %{"time" => 2, "value" => 4, "size" => 175},
+  %{"time" => 3, "value" => 17, "size" => 100}
 ]
 
 Vl.new()
 |> Vl.data_from_values(data)
 |> Vl.encode_field(:x, "time")
-|> Vl.mark(:point, color: "#000000")
-|> Vl.encode_field(:y, "value")
+|> Vl.layers([
+  Vl.new()
+  |> Vl.mark(:line, color: "#000000")
+  |> Vl.encode_field(:y, "value", type: :quantitative),
+  Vl.new()
+  |> Vl.mark(:line, color: "red")
+  |> Vl.encode_field(:y, "size", type: :quantitative)
+])
+|> Vl.resolve(:scale, y: :independent)
+```
+
+## Closer to Event Timeseries
+
+```elixir
+data = [
+  %{"event" => :func_call, "name" => "func1", "start" => 1, "end" => 8},
+  %{"event" => :cpu_measure, "time" => 3, "value" => 18},
+  %{"event" => :func_call, "name" => "func2", "start" => 2, "end" => 5},
+  %{"event" => :cpu_measure, "time" => 6, "value" => 5},
+  %{"event" => :func_call, "name" => "func3", "start" => 4, "end" => 7}
+]
+
+times = 1..8
+
+Vl.new()
+|> Vl.data_from_series(x: times)
 ```

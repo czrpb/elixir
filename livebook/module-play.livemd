@@ -1,0 +1,31 @@
+# Module Play
+
+## Vega-lite
+
+```elixir
+Mix.install([
+  {:vega_lite, "~> 0.1.0"},
+  ?
+  {:kino, "~> 0.2.0"}
+])
+```
+
+```elixir
+Code.require_file("test.ex")
+```
+
+```elixir
+Test.test(VegaLite)
+```
+
+```elixir
+Test.vl_basic_timeseries(VegaLite)
+```
+
+```elixir
+Test.vl_basic_timeseries(Enum)
+```
+
+```elixir
+Test.vl_basic_timeseries(VegaLite)
+```
