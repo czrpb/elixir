@@ -54,6 +54,7 @@ test01
     MapGroupByRange.put(n, acc, 10)
   end
 )
+|> Enum.into(%{}, fn {key, value} -> {key, Map.keys(value)} end)
 #|> Enum.into(%{}, &MapGroupByRange.put(&1, %{}, 10))
 |> inspect
 |> IO.puts
