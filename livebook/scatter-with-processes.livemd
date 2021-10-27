@@ -1,0 +1,57 @@
+# Scatterplot
+
+## Installs
+
+```elixir
+Mix.install([
+  {:vega_lite, "~> 0.1.2"},
+  {:kino, "~> 0.3.0"}
+])
+
+alias VegaLite, as: Vl
+```
+
+## Data
+
+## Visualizations
+
+```elixir
+cpu_ts =
+  1..1000
+  |> Enum.map(fn ts ->
+    %{"ts" => ts, "cpu" => (:rand.uniform() * 100) |> round}
+  end)
+
+processes_ts =
+  [
+    %{"name" => "EventA", "start" => 322, "end" => 522, "cpu" => 90},
+    %{"name" => "EventA", "start" => 310, "end" => 550, "cpu" => 90},
+    %{"name" => "EventA", "start" => 333, "end" => 555, "cpu" => 90},
+    %{"name" => "EventA", "start" => 331, "end" => 500, "cpu" => 90},
+    %{"name" => "EventA", "start" => 327, "end" => 544, "cpu" => 90}
+  ]
+  |> Enum.map(fn %{"start" => start, "end" => end_} = item ->
+    Map.put(item, "duration", end_ - start)
+  end)
+
+scatter =
+  Vl.new(height: 480, width: 700, title: "Processes with High CPU Usage")
+  |> Vl.layers([
+    Vl.new()
+    |> Vl.data_from_values(cpu_ts)
+    |> Vl.mark(:point, filled: true, size: 11, tooltip: true)
+    |> Vl.encode_field(:color, "cpu",
+      type: :quantitative,
+      scale: [range: [:yellow, :purple]],
+      legend: [orient: :left]
+    )
+    |> Vl.encode_field(:x, "ts", type: :quantitative)
+    |> Vl.encode_field(:y, "cpu", type: :quantitative),
+    Vl.new()
+    |> Vl.data_from_values(processes_ts)
+    |> Vl.mark(:boxplot, orient: :horizontal, color: :green, ticks: true, opacity: 0.6)
+    |> Vl.encode(:size, value: 40)
+    |> Vl.encode_field(:x, "duration", type: :quantitative)
+    |> Vl.encode_field(:y, "cpu", type: :quantitative)
+  ])
+```
