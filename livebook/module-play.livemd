@@ -1,31 +1,23 @@
 # Module Play
 
-## Vega-lite
+## Load then Use a Module
+
+```elixir
+Code.compile_file("lib1.ex")
+```
+
+```elixir
+Lib1.lib1("test")
+```
+
+## Load from Github using "sparse"
 
 ```elixir
 Mix.install([
-  {:vega_lite, "~> 0.1.0"},
-  ?
-  {:kino, "~> 0.2.0"}
+  {:findlinesafter, git: "https://github.com/czrpb/elixir.git", sparse: "play/findlinesafter"}
 ])
 ```
 
 ```elixir
-Code.require_file("test.ex")
-```
-
-```elixir
-Test.test(VegaLite)
-```
-
-```elixir
-Test.vl_basic_timeseries(VegaLite)
-```
-
-```elixir
-Test.vl_basic_timeseries(Enum)
-```
-
-```elixir
-Test.vl_basic_timeseries(VegaLite)
+FindLinesAfter.lines_after("a")
 ```
