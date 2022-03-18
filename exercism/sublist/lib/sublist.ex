@@ -98,27 +98,27 @@ defmodule SubList2 do
 
   def compare(l1, l2) do
     cond do
-      length(l1) == length(l2) -> comparel1, l2, :equal, l1, [:ignore])
-      length(l1) < length(l2) -> comparel1, l2, :sublist, l1, [:ignore])
-      true -> comparel2, l1, :superlist, l2, [:ignore])
+      length(l1) == length(l2) -> compare(l1, l2, :equal, l1, [:ignore])
+      length(l1) < length(l2) -> compare(l1, l2, :sublist, l1, [:ignore])
+      true -> compare(l2, l1, :superlist, l2, [:ignore])
     end
   end
 
-  defp compare[], [], result, _original, _matches), do: result
+  defp compare([], [], result, _original, _matches), do: result
 
-  defp compare[], _lt2, result, _original, _matches), do: result
+  defp compare([], _lt2, result, _original, _matches), do: result
 
-  defp compare_lt1, [], _result, _original, _matches), do: :unequal
+  defp compare(_lt1, [], _result, _original, _matches), do: :unequal
 
-  defp compare[a | lt1], [a | lt2], result, original, matches) do
-    comparelt1, lt2, result, original, [a | matches])
+  defp compare([a | lt1], [a | lt2], result, original, matches) do
+    compare(lt1, lt2, result, original, [a | matches])
   end
 
-  defp compare[_a | _], [_b | lt2]=l2, result, original, matches) do
+  defp compare([_a | _], [_b | lt2]=l2, result, original, matches) do
     #{l2, lt2, matches} |> inspect |> IO.puts
     matches = matches |> Enum.reverse |> Enum.drop(2)
 
-    compare
+    compare(
       original,
       matches ++ (if Enum.empty?(matches), do: lt2, else: l2),
       result,
@@ -129,7 +129,7 @@ defmodule SubList2 do
 end
 
 defmodule SubList3 do
-  def comparel1, l2) do
+  def compare(l1, l2) do
     l1_l = length(l1)
     l2_l = length(l2)
 
@@ -145,26 +145,26 @@ end
 defmodule SubList4 do
   @type listtype :: :unequal | :sublist | :superlist | :equal
 
-  @spec comparelist, list) :: listtype
-  def comparel1, l2) do
+  @spec compare(list, list) :: listtype
+  def compare(l1, l2) do
     l1_l = length(l1)
     l2_l = length(l2)
 
     cond do
       l1_l == l2_l -> if l1 == l2, do: :equal, else: :unequal
-      l1_l < l2_l -> comparel1, l2, :sublist)
-      true -> comparel2, l1, :superlist)
+      l1_l < l2_l -> compare(l1, l2, :sublist)
+      true -> compare(l2, l1, :superlist)
     end
   end
 
-  @spec comparelist, list, listtype) :: listtype
-  def compare_, [], _), do: :unequal
+  @spec compare(list, list, listtype) :: listtype
+  def compare(_, [], _), do: :unequal
 
-  def comparel1, [_ | l2_tl] = l2, result) do
+  def compare(l1, [_ | l2_tl] = l2, result) do
     if List.starts_with?(l2, l1) do
       result
     else
-      comparel1, l2_tl, result)
+      compare(l1, l2_tl, result)
     end
   end
 end
