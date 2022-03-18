@@ -13,6 +13,7 @@ defmodule SublistTest do
     test "second list missing element from first list" do
       assert SubList2.compare([1, 2, 3], [1, 3]) == :unequal
     end
+
     test "first list missing element from second list" do
       assert SubList2.compare([1, 3], [1, 2, 3]) == :unequal
     end

@@ -96,7 +96,7 @@ defmodule SubList2 do
   Documentation for `SubList1`.
   """
 
-  def comparel1, l2) do
+  def compare(l1, l2) do
     cond do
       length(l1) == length(l2) -> comparel1, l2, :equal, l1, [:ignore])
       length(l1) < length(l2) -> comparel1, l2, :sublist, l1, [:ignore])
