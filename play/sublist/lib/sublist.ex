@@ -21,10 +21,17 @@ defmodule SubList1 do
     sublist(lt1, lt2, result, original, [a | matches])
   end
 
-  defp sublist([_a | _], [_b | lt2], result, original, matches) do
-    # matches |> inspect |> IO.puts
-    [_ | matches] = Enum.reverse(matches)
-    sublist(original, matches ++ lt2, result, original, [:ignore])
+  defp sublist([_a | _], [_b | lt2]=l2, result, original, matches) do
+    #{l2, lt2, matches} |> inspect |> IO.puts
+    matches = matches |> Enum.reverse |> Enum.drop(2)
+
+    sublist(
+      original,
+      matches ++ (if Enum.empty?(matches), do: lt2, else: l2),
+      result,
+      original,
+      [:ignore]
+    )
   end
 end
 

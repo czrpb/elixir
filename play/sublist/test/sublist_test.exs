@@ -98,9 +98,4 @@ defmodule SubList1Test do
     assert SubList3.sublist([1, 1, 2], [1, 1, 1, 2]) == :sublist
   end
 
-  test "sublist([1, 2, 4], [1, 2, 3, 4])" do
-    assert SubList1.sublist([1, 2, 4], [1, 2, 3, 4]) == :unequal
-    assert SubList2.sublist([1, 2, 4], [1, 2, 3, 4]) == :unequal
-    assert SubList3.sublist([1, 2, 4], [1, 2, 3, 4]) == :unequal
-  end
 end
