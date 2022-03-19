@@ -1,26 +1,32 @@
 defmodule SubList do
   def compare([], []), do: :equal
   def compare(a, a), do: :equal
+
   def compare(a, b) when length(a) == length(b) do
     :unequal
   end
+
   def compare(a, b)
-  when length(a) < length(b) do
+      when length(a) < length(b) do
     compare_(a, b, [], :sublist)
   end
+
   def compare(a, b), do: compare_(b, a, [], :superlist)
 
   def compare_([], _, _, type), do: type
   def compare_(_, [], _, type), do: :unequal
-  def compare_([a|as], [a|bs], matched, type) do
-    compare_(as, bs, [a|matched], type)
+
+  def compare_([a | as], [a | bs], matched, type) do
+    compare_(as, bs, [a | matched], type)
   end
-  def compare_([a|_]=as, [b|bs], [], type) do
+
+  def compare_([a | _] = as, [b | bs], [], type) do
     compare_(as, bs, [], type)
   end
-  def compare_([a|_]=as, [b|_]=bs, matched, type) do
+
+  def compare_([a | _] = as, [b | _] = bs, matched, type) do
     matched = Enum.reverse(matched)
-    compare_(matched++as, (matched|>tl)++bs, [], type)
+    compare_(matched ++ as, (matched |> tl) ++ bs, [], type)
   end
 end
 
@@ -51,43 +57,49 @@ defmodule SubList1 do
   def compare(l, l), do: :equal
   def compare([], _), do: :sublist
   def compare(_, []), do: :superlist
+
   def compare(a, b)
-  when length(a) < length(b) do
+      when length(a) < length(b) do
     cond do
       Enum.take(b, length(a)) === a -> :sublist
-      Enum.drop(b, length(b)-length(a)) === a -> :sublist
+      Enum.drop(b, length(b) - length(a)) === a -> :sublist
       true -> compare_sublist(a, b, [], Enum.reverse(a))
     end
   end
+
   def compare(a, b)
-  when length(b) < length(a) do
+      when length(b) < length(a) do
     cond do
       Enum.take(a, length(b)) === b -> :superlist
-      Enum.drop(a, length(a)-length(b)) === b -> :superlist
+      Enum.drop(a, length(a) - length(b)) === b -> :superlist
       true -> compare_superlist(a, b, [], Enum.reverse(b))
     end
   end
-  def compare(_, _), do: :unequal
 
+  def compare(_, _), do: :unequal
 
   defp compare_sublist([], _, a_orig, a_orig), do: :sublist
   defp compare_sublist([], _, _, _), do: :unequal
   defp compare_sublist(_, [], _, _), do: :unequal
-  defp compare_sublist([a|as], [a|bs], matched, a_orig) do
-    compare_sublist(as, bs, [a|matched], a_orig)
+
+  defp compare_sublist([a | as], [a | bs], matched, a_orig) do
+    compare_sublist(as, bs, [a | matched], a_orig)
   end
-  defp compare_sublist(a, [b|bs], matched, a_orig) do
-    compare_sublist(Enum.reverse(matched)++a, bs, [], a_orig)
+
+  defp compare_sublist(a, [b | bs], matched, a_orig) do
+    compare_sublist(Enum.reverse(matched) ++ a, bs, [], a_orig)
   end
 
   defp compare_superlist(_, [], b_orig, b_orig), do: :superlist
   defp compare_superlist(_, [], _, _), do: :unequal
   defp compare_superlist([], b_orig, _, b_orig), do: :unequal
-  defp compare_superlist([a|as], [a|bs], matched, b_orig) do
-    compare_superlist(as, bs, [a|matched], b_orig)
+
+  defp compare_superlist([a | as], [a | bs], matched, b_orig) do
+    compare_superlist(as, bs, [a | matched], b_orig)
   end
-  defp compare_superlist([a|as], b, matched, b_orig) do
-    compare_superlist(as, Enum.reverse(matched)++b, [], b_orig)
+
+  defp compare_superlist([a | as], b, matched, b_orig) do
+    compare_superlist(as, Enum.reverse(matched) ++ b, [], b_orig)
   end
 end
 
@@ -114,13 +126,13 @@ defmodule SubList2 do
     compare(lt1, lt2, result, original, [a | matches])
   end
 
-  defp compare([_a | _], [_b | lt2]=l2, result, original, matches) do
-    #{l2, lt2, matches} |> inspect |> IO.puts
-    matches = matches |> Enum.reverse |> Enum.drop(2)
+  defp compare([_a | _], [_b | lt2] = l2, result, original, matches) do
+    # {l2, lt2, matches} |> inspect |> IO.puts
+    matches = matches |> Enum.reverse() |> Enum.drop(2)
 
     compare(
       original,
-      matches ++ (if Enum.empty?(matches), do: lt2, else: l2),
+      matches ++ if(Enum.empty?(matches), do: lt2, else: l2),
       result,
       original,
       [:ignore]
@@ -129,6 +141,10 @@ defmodule SubList2 do
 end
 
 defmodule SubList3 do
+  def compare([], []), do: :equal
+  def compare([], _), do: :sublist
+  def compare(_, []), do: :superlist
+
   def compare(l1, l2) do
     l1_l = length(l1)
     l2_l = length(l2)
