@@ -14,17 +14,17 @@ defmodule SubList do
   def compare(a, b), do: compare_(b, a, [], :superlist)
 
   def compare_([], _, _, type), do: type
-  def compare_(_, [], _, type), do: :unequal
+  def compare_(_, [], _, _type), do: :unequal
 
   def compare_([a | as], [a | bs], matched, type) do
     compare_(as, bs, [a | matched], type)
   end
 
-  def compare_([a | _] = as, [b | bs], [], type) do
+  def compare_([_a | _] = as, [_b | bs], [], type) do
     compare_(as, bs, [], type)
   end
 
-  def compare_([a | _] = as, [b | _] = bs, matched, type) do
+  def compare_([_a | _] = as, [_b | _] = bs, matched, type) do
     matched = Enum.reverse(matched)
     compare_(matched ++ as, (matched |> tl) ++ bs, [], type)
   end
@@ -86,7 +86,7 @@ defmodule SubList1 do
     compare_sublist(as, bs, [a | matched], a_orig)
   end
 
-  defp compare_sublist(a, [b | bs], matched, a_orig) do
+  defp compare_sublist(a, [_b | bs], matched, a_orig) do
     compare_sublist(Enum.reverse(matched) ++ a, bs, [], a_orig)
   end
 
@@ -98,7 +98,7 @@ defmodule SubList1 do
     compare_superlist(as, bs, [a | matched], b_orig)
   end
 
-  defp compare_superlist([a | as], b, matched, b_orig) do
+  defp compare_superlist([_a | as], b, matched, b_orig) do
     compare_superlist(as, Enum.reverse(matched) ++ b, [], b_orig)
   end
 end
