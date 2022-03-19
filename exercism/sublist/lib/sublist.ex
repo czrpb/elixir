@@ -1,4 +1,4 @@
-defmodule SubList do
+defmodule Sublist do
   def compare([], []), do: :equal
   def compare(a, a), do: :equal
 
