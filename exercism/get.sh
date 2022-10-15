@@ -2,6 +2,8 @@
 
 set -x
 
+exercism configure -w $PWD
+
 exercism download --exercise=$1 --track=elixir
 
 mv -v elixir/$1 .
