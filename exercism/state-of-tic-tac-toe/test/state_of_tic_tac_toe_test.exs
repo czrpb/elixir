@@ -2,7 +2,6 @@ defmodule StateOfTicTacToeTest do
   use ExUnit.Case
 
   describe "Won games" do
-    # @tag :pending
     test "Finished game where X won via left column victory" do
       board = """
       XOO
@@ -13,7 +12,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via middle column victory" do
       board = """
       OXO
@@ -24,7 +22,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via right column victory" do
       board = """
       OOX
@@ -35,7 +32,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via left column victory" do
       board = """
       OXX
@@ -46,7 +42,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via middle column victory" do
       board = """
       XOX
@@ -57,7 +52,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via right column victory" do
       board = """
       XXO
@@ -68,7 +62,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via top row victory" do
       board = """
       XXX
@@ -79,7 +72,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via middle row victory" do
       board = """
       O..
@@ -90,7 +82,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via bottom row victory" do
       board = """
       .OO
@@ -101,7 +92,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via top row victory" do
       board = """
       OOO
@@ -112,7 +102,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via middle row victory" do
       board = """
       XX.
@@ -123,7 +112,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via bottom row victory" do
       board = """
       XOX
@@ -134,7 +122,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via falling diagonal victory" do
       board = """
       XOO
@@ -145,7 +132,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via rising diagonal victory" do
       board = """
       O.X
@@ -156,7 +142,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via falling diagonal victory" do
       board = """
       OXX
@@ -167,7 +152,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where O won via rising diagonal victory" do
       board = """
       ..O
@@ -178,7 +162,6 @@ defmodule StateOfTicTacToeTest do
       assert StateOfTicTacToe.game_state(board) == {:ok, :win}
     end
 
-    @tag :pending
     test "Finished game where X won via a row and a column victory" do
       board = """
       XXX
